@@ -2607,7 +2607,7 @@ function publishToWeb() {
   window.publishFile = file;
   
   // Buka window untuk upload
-  const webAppUrl = 'YOUR_WEB_APP_URL'; // Ganti dengan URL web app Anda
+  const webAppUrl = 'https://script.google.com/macros/s/AKfycbxCFw6KLbjnJuniD2qAyiR9WOXe73nuhw4VvHpyUvUD5BDq4mrzre2jqUETd57xJ0c6/exec'; // Ganti dengan URL web app Anda
   const publishWindow = window.open('', '_blank');
   
   // Redirect ke halaman upload
