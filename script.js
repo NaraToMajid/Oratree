@@ -2592,6 +2592,64 @@ function exportHTML(){
     toast('File HTML berhasil dieksport! 🎉');
 }
 
+// Tambahkan di script.js
+function publishToWeb() {
+  // Generate HTML dari preview
+  const html = buildHTML();
+  
+  // Buat blob HTML
+  const blob = new Blob([html], { type: 'text/html' });
+  
+  // Buat file object
+  const file = new File([blob], `oratree-${Date.now()}.html`, { type: 'text/html' });
+  
+  // Simpan ke variable global
+  window.publishFile = file;
+  
+  // Buka window untuk upload
+  const webAppUrl = 'YOUR_WEB_APP_URL'; // Ganti dengan URL web app Anda
+  const publishWindow = window.open('', '_blank');
+  
+  // Redirect ke halaman upload
+  publishWindow.location.href = webAppUrl;
+  
+  // Tampilkan instruksi
+  toast('Buka window baru untuk publish!');
+}
+
+// Atau buat langsung upload tanpa window baru
+function publishDirect() {
+  const html = buildHTML();
+  const blob = new Blob([html], { type: 'text/html' });
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64 = e.target.result.split(',')[1];
+    
+    // Gunakan iframe untuk upload (cara alternatif)
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    
+    // Kirim data ke web app
+    fetch('YOUR_WEB_APP_URL', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        base64: base64,
+        fileName: `oratree-${Date.now()}.html`
+      })
+    }).then(() => {
+      toast('Publish berhasil! Link akan muncul di halaman upload');
+      window.open('YOUR_WEB_APP_URL', '_blank');
+    });
+  };
+  reader.readAsDataURL(blob);
+}
+
 // ─── UTILS ───
 function val(id){const e=document.getElementById(id);return e?e.value:''}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
