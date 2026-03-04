@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <title>OraTree — Professional Linktree Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,700;1,400&family=Space+Mono:wght@400;700&family=Righteous&family=Josefin+Sans:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Bebas+Neue&family=Nunito:wght@400;700;900&family=Cinzel:wght@400;700&family=Press+Start+2P&family=VT323&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Exo+2:wght@300;400;700&family=Unbounded:wght@400;700;900&family=Archivo+Black&family=Permanent+Marker&family=Caveat:wght@400;700&family=Pacifico&family=Boogaloo&family=Fredoka+One&family=Lilita+One&family=Titan+One&family=Black+Ops+One&family=Audiowide&family=Teko:wght@400;600;700&family=Russo+One&family=Oswald:wght@300;400;600;700&family=Montserrat:ital,wght@0,400;0,700;0,900;1,400&family=Raleway:wght@300;400;700;900&family=Lora:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,300;0,700;1,300&family=IBM+Plex+Mono:wght@400;700&family=Fira+Code:wght@400;700&family=Source+Code+Pro:wght@400;700&family=Chakra+Petch:wght@400;600;700&family=Share+Tech+Mono&family=Oxanium:wght@400;700&family=Electrolize&family=Nova+Square&family=Wallpoet&family=Tourney:wght@400;700;900&family=Antonio:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══════════ TOPBAR ═══════════ -->
+<header class="topbar">
+    <div style="display:flex;align-items:center;gap:8px">
+        <button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+        <a class="logo" href="#">
+            <img src="logo.webp" alt="OraTree Logo" class="logo-mark" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <span class="logo-mark-fallback" style="display:none;">🌿</span>
+            <span class="logo-text">OraTree</span>
+        </a>
+    </div>
+    <div class="topbar-actions">
+        <button class="tbtn tbtn-ghost tbtn-fs" onclick="openFullscreen()" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+        <button class="tbtn tbtn-export" onclick="exportHTML()"><i class="fa-solid fa-download"></i> Export HTML</button>
+    </div>
+</header>
+
+<!-- ═══════════ APP ═══════════ -->
+<div class="app">
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="stabs">
+            <div class="stab active" onclick="switchTab('profile')"><i class="fa-solid fa-user"></i><br>Profil</div>
+            <div class="stab" onclick="switchTab('links')"><i class="fa-solid fa-link"></i><br>Links</div>
+            <div class="stab" onclick="switchTab('themes')"><i class="fa-solid fa-palette"></i><br>Tema</div>
+            <div class="stab" onclick="switchTab('font')"><i class="fa-solid fa-font"></i><br>Font</div>
+            <div class="stab" onclick="switchTab('style')"><i class="fa-solid fa-sliders"></i><br>Gaya</div>
+        </div>
+
+        <!-- PROFILE TAB -->
+        <div class="tabp active" id="tab-profile">
+            <div class="sec-lbl">Identitas</div>
+            <div class="fld"><label>Nama Lengkap</label><input id="p-name" value="Nama Kamu" oninput="debouncedUpdate()"></div>
+            <div class="fld"><label>Username / Handle</label><input id="p-user" value="@usernamekamu" oninput="debouncedUpdate()"></div>
+            <div class="fld"><label>Bio</label><textarea id="p-bio" oninput="debouncedUpdate()">Content Creator · Designer · Coffee Addict</textarea></div>
+            <div class="row2">
+                <div class="fld"><label>URL Foto</label><input id="p-avatar" placeholder="https://..." oninput="debouncedUpdate()"></div>
+                <div class="fld"><label>Inisial</label><input id="p-init" value="NK" maxlength="3" oninput="debouncedUpdate()"></div>
+            </div>
+            <div class="fld"><label>Warna Avatar (jika tidak ada foto)</label>
+                <select id="p-av-color" onchange="debouncedUpdate()">
+                    <option value="accent">Warna Aksen Tema</option>
+                    <option value="#ff6b6b">Merah Coral</option>
+                    <option value="#7c6fff">Ungu</option>
+                    <option value="#00d2d3">Teal</option>
+                    <option value="#ffd700">Emas</option>
+                    <option value="#ff9f43">Oranye</option>
+                    <option value="#1dd1a1">Hijau Mint</option>
+                    <option value="#c56cf0">Pink Lavender</option>
+                </select>
+            </div>
+            <div class="sec-lbl">Sosial Media</div>
+            <div id="socials-wrap">
+                <div class="soc-item"><span class="soc-icon-wrap"><i class="fa-brands fa-instagram"></i></span><input id="s-ig" placeholder="Instagram URL" oninput="debouncedUpdate()"></div>
+                <div class="soc-item"><span class="soc-icon-wrap"><i class="fa-brands fa-tiktok"></i></span><input id="s-tt" placeholder="TikTok URL" oninput="debouncedUpdate()"></div>
+                <div class="soc-item"><span class="soc-icon-wrap"><i class="fa-brands fa-x-twitter"></i></span><input id="s-tw" placeholder="Twitter/X URL" oninput="debouncedUpdate()"></div>
+                <div class="soc-item"><span class="soc-icon-wrap"><i class="fa-brands fa-youtube"></i></span><input id="s-yt" placeholder="YouTube URL" oninput="debouncedUpdate()"></div>
+                <div class="soc-item"><span class="soc-icon-wrap"><i class="fa-brands fa-linkedin"></i></span><input id="s-li" placeholder="LinkedIn URL" oninput="debouncedUpdate()"></div>
+                <div class="soc-item"><span class="soc-icon-wrap"><i class="fa-brands fa-facebook"></i></span><input id="s-fb" placeholder="Facebook URL" oninput="debouncedUpdate()"></div>
+                <div class="soc-item"><span class="soc-icon-wrap"><i class="fa-brands fa-github"></i></span><input id="s-gh" placeholder="GitHub URL" oninput="debouncedUpdate()"></div>
+                <div class="soc-item"><span class="soc-icon-wrap"><i class="fa-brands fa-discord"></i></span><input id="s-dc" placeholder="Discord URL" oninput="debouncedUpdate()"></div>
+                <div class="soc-item"><span class="soc-icon-wrap"><i class="fa-brands fa-telegram"></i></span><input id="s-tg" placeholder="Telegram URL" oninput="debouncedUpdate()"></div>
+                <div class="soc-item"><span class="soc-icon-wrap"><i class="fa-solid fa-globe"></i></span><input id="s-web" placeholder="Website URL" oninput="debouncedUpdate()"></div>
+            </div>
+        </div>
+
+        <!-- LINKS TAB -->
+        <div class="tabp" id="tab-links">
+            <div class="sec-lbl">Kelola Link</div>
+            <div id="links-list"></div>
+            <button class="add-link-btn" onclick="addLink()"><i class="fa-solid fa-plus"></i> Tambah Link Baru</button>
+        </div>
+
+        <!-- THEMES TAB -->
+        <div class="tabp" id="tab-themes">
+            <input class="th-search" id="th-search" placeholder="&#xF002; Cari tema..." oninput="filterThemes()" autocomplete="off">
+            <div class="th-cats-row" id="th-cats"></div>
+            <div id="th-count" class="th-count"></div>
+            <div class="th-grid" id="th-grid"></div>
+        </div>
+
+        <!-- FONT TAB -->
+        <div class="tabp" id="tab-font">
+            <div class="sec-lbl">Kostum Font</div>
+            <div class="fld">
+                <label>Font Nama / Judul</label>
+                <select id="f-name-font" onchange="debouncedUpdate()">
+                    <option value="">Ikuti Tema</option>
+                    <optgroup label="── Modern Sans ──">
+                        <option value="'Syne',sans-serif">Syne</option>
+                        <option value="'Unbounded',sans-serif">Unbounded</option>
+                        <option value="'Archivo Black',sans-serif">Archivo Black</option>
+                        <option value="'Oswald',sans-serif">Oswald</option>
+                        <option value="'Raleway',sans-serif">Raleway</option>
+                        <option value="'Montserrat',sans-serif">Montserrat</option>
+                        <option value="'Teko',sans-serif">Teko</option>
+                        <option value="'Russo One',sans-serif">Russo One</option>
+                        <option value="'Antonio',sans-serif">Antonio</option>
+                        <option value="'Tourney',sans-serif">Tourney</option>
+                    </optgroup>
+                    <optgroup label="── Serif / Elegant ──">
+                        <option value="'Playfair Display',serif">Playfair Display</option>
+                        <option value="'Cinzel',serif">Cinzel</option>
+                        <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
+                        <option value="'Lora',serif">Lora</option>
+                        <option value="'Merriweather',serif">Merriweather</option>
+                    </optgroup>
+                    <optgroup label="── Sci-Fi / Tech ──">
+                        <option value="'Orbitron',sans-serif">Orbitron</option>
+                        <option value="'Audiowide',sans-serif">Audiowide</option>
+                        <option value="'Chakra Petch',sans-serif">Chakra Petch</option>
+                        <option value="'Rajdhani',sans-serif">Rajdhani</option>
+                        <option value="'Exo 2',sans-serif">Exo 2</option>
+                        <option value="'Oxanium',sans-serif">Oxanium</option>
+                        <option value="'Electrolize',sans-serif">Electrolize</option>
+                        <option value="'Nova Square',sans-serif">Nova Square</option>
+                        <option value="'Wallpoet',sans-serif">Wallpoet</option>
+                    </optgroup>
+                    <optgroup label="── Monospace ──">
+                        <option value="'Space Mono',monospace">Space Mono</option>
+                        <option value="'IBM Plex Mono',monospace">IBM Plex Mono</option>
+                        <option value="'Fira Code',monospace">Fira Code</option>
+                        <option value="'Source Code Pro',monospace">Source Code Pro</option>
+                        <option value="'Share Tech Mono',monospace">Share Tech Mono</option>
+                    </optgroup>
+                    <optgroup label="── Pixel / Retro ──">
+                        <option value="'Press Start 2P',monospace">Press Start 2P</option>
+                        <option value="'VT323',monospace">VT323</option>
+                        <option value="'Black Ops One',sans-serif">Black Ops One</option>
+                    </optgroup>
+                    <optgroup label="── Handwriting ──">
+                        <option value="'Pacifico',cursive">Pacifico</option>
+                        <option value="'Caveat',cursive">Caveat</option>
+                        <option value="'Permanent Marker',cursive">Permanent Marker</option>
+                    </optgroup>
+                    <optgroup label="── Fun / Display ──">
+                        <option value="'Fredoka One',sans-serif">Fredoka One</option>
+                        <option value="'Nunito',sans-serif">Nunito</option>
+                        <option value="'Boogaloo',sans-serif">Boogaloo</option>
+                        <option value="'Lilita One',sans-serif">Lilita One</option>
+                        <option value="'Titan One',sans-serif">Titan One</option>
+                        <option value="'Bebas Neue',sans-serif">Bebas Neue</option>
+                        <option value="'Josefin Sans',sans-serif">Josefin Sans</option>
+                        <option value="'Righteous',sans-serif">Righteous</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="fld">
+                <label>Font Link / Tombol</label>
+                <select id="f-btn-font" onchange="debouncedUpdate()">
+                    <option value="">Ikuti Tema</option>
+                    <optgroup label="── Modern Sans ──">
+                        <option value="'Syne',sans-serif">Syne</option>
+                        <option value="'DM Sans',sans-serif">DM Sans</option>
+                        <option value="'Unbounded',sans-serif">Unbounded</option>
+                        <option value="'Archivo Black',sans-serif">Archivo Black</option>
+                        <option value="'Raleway',sans-serif">Raleway</option>
+                        <option value="'Montserrat',sans-serif">Montserrat</option>
+                        <option value="'Oswald',sans-serif">Oswald</option>
+                        <option value="'Teko',sans-serif">Teko</option>
+                        <option value="'Russo One',sans-serif">Russo One</option>
+                    </optgroup>
+                    <optgroup label="── Serif ──">
+                        <option value="'Playfair Display',serif">Playfair Display</option>
+                        <option value="'Cinzel',serif">Cinzel</option>
+                        <option value="'Lora',serif">Lora</option>
+                    </optgroup>
+                    <optgroup label="── Tech / Sci-Fi ──">
+                        <option value="'Orbitron',sans-serif">Orbitron</option>
+                        <option value="'Rajdhani',sans-serif">Rajdhani</option>
+                        <option value="'Chakra Petch',sans-serif">Chakra Petch</option>
+                        <option value="'Exo 2',sans-serif">Exo 2</option>
+                        <option value="'Audiowide',sans-serif">Audiowide</option>
+                    </optgroup>
+                    <optgroup label="── Monospace ──">
+                        <option value="'Space Mono',monospace">Space Mono</option>
+                        <option value="'IBM Plex Mono',monospace">IBM Plex Mono</option>
+                        <option value="'Fira Code',monospace">Fira Code</option>
+                    </optgroup>
+                    <optgroup label="── Pixel ──">
+                        <option value="'Press Start 2P',monospace">Press Start 2P</option>
+                        <option value="'VT323',monospace">VT323</option>
+                    </optgroup>
+                    <optgroup label="── Fun ──">
+                        <option value="'Fredoka One',sans-serif">Fredoka One</option>
+                        <option value="'Nunito',sans-serif">Nunito</option>
+                        <option value="'Pacifico',cursive">Pacifico</option>
+                        <option value="'Caveat',cursive">Caveat</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="fld">
+                <label>Ukuran Font Nama</label>
+                <select id="f-name-size" onchange="debouncedUpdate()">
+                    <option value="1rem">XS — 1rem</option>
+                    <option value="1.2rem">S — 1.2rem</option>
+                    <option value="1.5rem" selected>M — 1.5rem</option>
+                    <option value="1.9rem">L — 1.9rem</option>
+                    <option value="2.4rem">XL — 2.4rem</option>
+                    <option value="3rem">XXL — 3rem</option>
+                </select>
+            </div>
+            <div class="fld">
+                <label>Ukuran Font Link</label>
+                <select id="f-btn-size" onchange="debouncedUpdate()">
+                    <option value="0.6rem">XS — Pixel style</option>
+                    <option value="0.8rem">S — 0.8rem</option>
+                    <option value="0.92rem" selected>M — 0.92rem</option>
+                    <option value="1.05rem">L — 1.05rem</option>
+                    <option value="1.2rem">XL — 1.2rem</option>
+                </select>
+            </div>
+            <div class="fld">
+                <label>Letter Spacing Link</label>
+                <select id="f-spacing" onchange="debouncedUpdate()">
+                    <option value="-0.5px">Tight</option>
+                    <option value="0px" selected>Normal</option>
+                    <option value="1px">Wide</option>
+                    <option value="2px">Wider</option>
+                    <option value="4px">Widest</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- STYLE TAB -->
+        <div class="tabp" id="tab-style">
+            <div class="sec-lbl">Tombol Link</div>
+            <div class="fld">
+                <label>Bentuk Sudut</label>
+                <select id="s-radius" onchange="debouncedUpdate()">
+                    <option value="0">Kotak Tajam (0px)</option>
+                    <option value="4">Sedikit Bulat (4px)</option>
+                    <option value="8">Bulat Ringan (8px)</option>
+                    <option value="12" selected>Bulat (12px)</option>
+                    <option value="20">Sangat Bulat (20px)</option>
+                    <option value="999">Full Pill</option>
+                </select>
+            </div>
+            <div class="fld">
+                <label>Efek Hover</label>
+                <select id="s-hover" onchange="debouncedUpdate()">
+                    <option value="lift">Lift Up</option>
+                    <option value="glow">Glow</option>
+                    <option value="scale">Scale</option>
+                    <option value="fill">Slide Fill</option>
+                    <option value="invert">Invert Colors</option>
+                    <option value="none">Tanpa Efek</option>
+                </select>
+            </div>
+            <div class="fld">
+                <label>Jarak Antar Link</label>
+                <select id="s-gap" onchange="debouncedUpdate()">
+                    <option value="0.3rem">Rapat</option>
+                    <option value="0.6rem" selected>Normal</option>
+                    <option value="0.9rem">Longgar</option>
+                    <option value="1.3rem">Sangat Longgar</option>
+                </select>
+            </div>
+            <div class="sec-lbl">Avatar</div>
+            <div class="fld">
+                <label>Bentuk Avatar</label>
+                <select id="s-av-shape" onchange="debouncedUpdate()">
+                    <option value="50%">Lingkaran</option>
+                    <option value="30%">Squircle</option>
+                    <option value="12px">Rounded Square</option>
+                    <option value="0">Kotak</option>
+                </select>
+            </div>
+            <div class="fld">
+                <label>Ukuran Avatar</label>
+                <select id="s-av-size" onchange="debouncedUpdate()">
+                    <option value="60px">Kecil (60px)</option>
+                    <option value="80px">Sedang (80px)</option>
+                    <option value="100px" selected>Normal (100px)</option>
+                    <option value="130px">Besar (130px)</option>
+                    <option value="160px">XL (160px)</option>
+                </select>
+            </div>
+            <div class="sec-lbl">Animasi</div>
+            <div class="fld">
+                <label>Animasi Load</label>
+                <select id="s-anim" onchange="debouncedUpdate()">
+                    <option value="fadeup">Fade Up</option>
+                    <option value="slidedown">Slide Down</option>
+                    <option value="pop">Pop In</option>
+                    <option value="cascade">Cascade</option>
+                    <option value="none">Tanpa Animasi</option>
+                </select>
+            </div>
+            <div class="sec-lbl">Fitur Ekstra</div>
+            <div class="fld">
+                <label>Counter Klik (Simulasi)</label>
+                <select id="s-counter" onchange="debouncedUpdate()">
+                    <option value="0">Sembunyikan</option>
+                    <option value="1">Tampilkan</option>
+                </select>
+            </div>
+            <div class="fld">
+                <label>Tampilkan Sosial di Preview</label>
+                <select id="s-show-soc" onchange="debouncedUpdate()">
+                    <option value="1">Tampilkan</option>
+                    <option value="0">Sembunyikan</option>
+                </select>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ═══ PREVIEW ═══ -->
+    <main class="preview-area" id="preview-area">
+        <div class="preview-bar">
+            <div class="dev-modes">
+                <button class="dmode active" data-dev="phone" onclick="setDevice('phone',this)"><i class="fa-solid fa-mobile-screen-button"></i> Phone</button>
+                <button class="dmode" data-dev="tablet" onclick="setDevice('tablet',this)"><i class="fa-solid fa-tablet-screen-button"></i> Tablet</button>
+                <button class="dmode" data-dev="desktop" onclick="setDevice('desktop',this)"><i class="fa-solid fa-display"></i> Desktop</button>
+            </div>
+            <span class="th-label" id="th-label">Theme: —</span>
+        </div>
+        <div class="preview-stage" id="preview-stage">
+            <div class="device-wrap" id="device-wrap">
+                <div class="frame-phone" id="device-frame">
+                    <div class="screen">
+                        <iframe id="preview-iframe" title="Preview" scrolling="auto"></iframe>
+                    </div>
+                </div>
+                <div class="dev-label" id="dev-label">iPhone 14 Pro · 390×844</div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- ═══ FULLSCREEN ═══ -->
+<div class="fs-overlay" id="fs-overlay">
+    <button class="fs-close" onclick="closeFullscreen()"><i class="fa-solid fa-compress"></i></button>
+    <iframe id="fs-iframe" title="Fullscreen" scrolling="auto"></iframe>
+</div>
+
+<!-- ═══ ICON PICKER MODAL ═══ -->
+<div class="modal-overlay" id="ic-modal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <h3><i class="fa-solid fa-icons"></i> Pilih Icon</h3>
+            <button class="modal-close" onclick="closeIconModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="ic-tabs">
+            <button class="ic-tab active" onclick="switchIconType('fa',this)"><i class="fa-solid fa-star"></i> Font Awesome</button>
+            <button class="ic-tab" onclick="switchIconType('emoji',this)">😀 Emoji</button>
+        </div>
+        <input class="ic-search" id="ic-search" placeholder="Cari icon..." oninput="filterIcons()" autocomplete="off">
+        <div class="ic-cats" id="ic-cats"></div>
+        <div class="ic-grid" id="ic-grid"></div>
+        <div class="modal-foot">
+            <button class="tbtn tbtn-ghost" onclick="closeIconModal()">Batal</button>
+            <button class="tbtn tbtn-primary" onclick="applyIcon()"><i class="fa-solid fa-check"></i> Pilih</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
